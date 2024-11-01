@@ -47,8 +47,17 @@
         <el-form-item :prop="formData.tmName" label="品牌名称" :required="true">
           <el-input v-model="formData.tmName"></el-input>
         </el-form-item>
-        <el-form-item :prop="formData.logoUrl" label="品牌LOGO" :required="true">
-          <el-upload action="https://jsonplaceholder.typicode.com/posts/">
+        <el-form-item
+          :prop="formData.logoUrl"
+          label="品牌LOGO"
+          :required="true"
+        >
+          <el-upload
+            action="https://jsonplaceholder.typicode.com/posts/"
+            class="avatar-uploader"
+          >
+            <img :src="formData.logoUrl" class="avatar" />
+            <i class="el-icon-plus avatar-uploader-icon"></i>
             <template v-slot:tip>
               <div>只能上传jpg/png文件，且不超过500kb</div>
             </template>
@@ -57,7 +66,9 @@
       </el-form>
       <template v-slot:footer>
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button @click="dialogVisible = false" type="primary">确定</el-button>
+        <el-button @click="dialogVisible = false" type="primary"
+          >确定</el-button
+        >
       </template>
     </el-dialog>
   </div>
@@ -76,9 +87,9 @@ export default {
       },
       dialogVisible: true,
       formData: {
-        tmName: '',
-        logoUrl: ''
-      }
+        tmName: "",
+        logoUrl: "",
+      },
     };
   },
   methods: {
@@ -113,5 +124,30 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style scoped>
+.avatar-uploader .el-upload {
+  position: relative;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+  border: none;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  display: block;
+}
 </style>
