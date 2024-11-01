@@ -31,6 +31,9 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     proxy: {
+      '/admin/product': {
+        target: 'http://39.98.123.211:8510'
+      },
       '/admin': {
         target: 'http://39.98.123.211:8170'
       }
