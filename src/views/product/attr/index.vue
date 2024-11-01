@@ -4,8 +4,16 @@
 
 <script>
 export default {
-  name: 'Attr'
-}
+  name: "Attr",
+  data() {
+    return {
+      formData: {
+        trademarkName: '',
+
+      }
+    }
+  }
+};
 </script>
 
 <style scoped lang="less">
