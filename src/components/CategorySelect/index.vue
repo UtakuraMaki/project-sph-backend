@@ -6,6 +6,7 @@
         v-model="formData.category1Value"
         placeholder="请选择"
         @change="getCategory2"
+        :disabled="!flag"
       >
         <el-option
           v-for="item in category1"
@@ -21,6 +22,7 @@
         v-model="formData.category2Value"
         placeholder="请选择"
         @change="getCategory3"
+        :disabled="!flag"
       >
         <el-option
           v-for="item in category2"
@@ -32,7 +34,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="三级分类" prop="category3Value">
-      <el-select v-model="formData.category3Value" placeholder="请选择" @change="getAttrInfoList">
+      <el-select v-model="formData.category3Value" placeholder="请选择" @change="getAttrInfoList" :disabled="!flag">
         <el-option
           v-for="item in category3"
           :key="item.id"
@@ -48,6 +50,7 @@
 <script>
 export default {
   name: "CategorySelect",
+  props: ['flag'],
   data() {
     return {
       category1: [],
@@ -78,6 +81,10 @@ export default {
       this.formData.category2Value = ''
       this.formData.category3Value = ''
       this.category3 = []
+      this.$emit('getCategoryId', {
+        level: 1,
+        value: category1Id
+      })
       this.$emit('getAttrInfoList', [])
       this.$API.attr
         .getCategory2(category1Id)
@@ -90,6 +97,10 @@ export default {
     },
     getCategory3(category2Id) {
       this.formData.category3Value = ''
+      this.$emit('getCategoryId', {
+        level: 2,
+        value: category2Id
+      })
       this.$emit('getAttrInfoList', [])
       this.$API.attr
         .getCategory3(category2Id)

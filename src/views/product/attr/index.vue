@@ -3,7 +3,7 @@
   <div>
     <!-- 三级联动静态组件 -->
     <el-card>
-      <CategorySelect @getAttrInfoList="getAttrInfoList"></CategorySelect>
+      <CategorySelect @getAttrInfoList="getAttrInfoList" @getCategoryId="getCategoryId" :flag="flag"></CategorySelect>
     </el-card>
     <!-- 属性列表静态组件 -->
     <el-card v-if="flag">
@@ -88,7 +88,7 @@
         </el-table-column>
       </el-table>
       <div style="margin-top: 20px">
-        <el-button type="primary">保存</el-button>
+        <el-button type="primary" @click="addOrEditAttr" :disabled="!attrInfo.attrValueList.length">保存</el-button>
         <el-button @click="toShowAttr">取消</el-button>
       </div>
     </el-card>
@@ -101,9 +101,11 @@ export default {
   name: "Attr",
   data() {
     return {
+      category1Id: '',
+      category2Id: '',
       category3Id: '',
       attrInfoList: [],
-      flag: false,
+      flag: true,
       attrInfo: {
         attrName: "",
         attrValueList: [],
@@ -173,6 +175,40 @@ export default {
     },
     deleteAttrValue(index) {
       this.attrInfo.attrValueList.splice(index, 1)
+    },
+    addOrEditAttr() {
+      this.$API.attr.postSaveAttrInfo(this.attrInfo).then(result => {
+        if(result.code === 200) {
+          this.$message({
+            type: 'success',
+            message: '保存成功'
+          })
+          this.$API.attr.getAttrInfoList({
+            category1Id: this.category1Id,
+            category2Id: this.category2Id,
+            category3Id: this.category3Id
+          }).then(result => {
+            this.attrInfoList = result.data
+          })
+          this.flag = true
+        }
+        else {
+          this.$message({
+            type: 'error',
+            message: '保存失败'
+          })
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    getCategoryId(obj) {
+      if(obj.level === 1) {
+        this.category1Id = obj.value
+      }
+      else {
+        this.category2Id = obj.value
+      }
     }
   },
 };
